@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Properties</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Properties</h2>
+        <button id="logout">Logout</button>
+        <ul id="property-list"></ul>
+    </div>
+
+    <script>
+        document.getElementById('logout').addEventListener('click', function () {
+            window.location.href = "{{ url_for('logout') }}";
+        });
+
+        fetch('/api/properties')
+            .then(response => response.json())
+            .then(data => {
+                const propertyList = document.getElementById('property-list');
+                data.forEach(property => {
+                    const li = document.createElement('li');
+                    li.textContent = `${property.name} - $${property.price}`;
+                    propertyList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching properties:', error));
+    </script>
+</body>
+</html>
